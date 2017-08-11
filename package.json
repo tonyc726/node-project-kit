@@ -16,14 +16,14 @@
     "starter kit"
   ],
   "engines": {
-    "node": ">= 6"
+    "node": ">=6"
   },
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "babel --copy-files --out-dir dist --ignore *.test.js src",
-    "lint": "eslint src",
+    "lint": "eslint ./src",
     "test": "cross-env NODE_ENV=test jest ./src"
   },
   "devDependencies": {

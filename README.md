@@ -1,6 +1,6 @@
 # Node.js Project Kit
 
-[![Build Status](https://travis-ci.org/tonyc726/node-project-kit.svg?branch=master)](https://travis-ci.org/tonyc726/node-project-kit)
+[![Build Status](https://travis-ci.org/tonyc726/node-project-kit.svg?style=flat-square&branch=master)](https://travis-ci.org/tonyc726/node-project-kit)
 [![node](https://img.shields.io/node/v/gh-badges.svg?style=flat-square)](https://github.com/tonyc726/node-project-kit)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/tonyc726/node-project-kit)
