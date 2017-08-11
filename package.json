@@ -16,7 +16,7 @@
     "starter kit"
   ],
   "engines": {
-    "node": "^6.x.x"
+    "node": ">= 6"
   },
   "main": "dist/index.js",
   "jsnext:main": "src/index.js",
