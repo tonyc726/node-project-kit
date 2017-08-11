@@ -1,0 +1,49 @@
+{
+  "name": "node-project-kit",
+  "version": "1.0.0",
+  "description": "A boilerplate helps you create node project easier.",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonyc726/node-project-kit"
+  },
+  "author": "tony <zhujf620@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "npm",
+    "boilerplate",
+    "starter kit"
+  ],
+  "engines": {
+    "node": "^6.x.x"
+  },
+  "main": "dist/index.js",
+  "jsnext:main": "src/index.js",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "babel --copy-files --out-dir dist --ignore *.test.js src",
+    "lint": "eslint src",
+    "test": "cross-env NODE_ENV=test jest ./src"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.0.5",
+    "eslint": "^4.4.1",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "jest": "^20.0.4",
+    "npm-run-all": "^4.0.2",
+    "rimraf": "^2.6.1"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.25.0"
+  }
+}
