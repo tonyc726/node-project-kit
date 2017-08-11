@@ -1,6 +1,6 @@
 {
   "name": "node-project-kit",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "A boilerplate helps you create node project easier.",
   "private": true,
   "repository": {

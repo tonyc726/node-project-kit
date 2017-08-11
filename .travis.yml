@@ -2,23 +2,23 @@ language: node_js
 cache:
   yarn: true
   directories:
-  - node_modules
+    - node_modules
 node_js:
-- '8'
-- '7'
-- '6'
+  - '8'
+  - '7'
+  - '6'
 branches:
   only:
-  - master
+    - master
 before_install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash
-- export PATH="$HOME/.yarn/bin:$PATH"
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH="$HOME/.yarn/bin:$PATH"
 script:
-- yarn run lint
-- yarn run test
-- yarn run build
+  - yarn run lint
+  - yarn run test
+  - yarn run build
 after_success:
-- yarn run release
+  - yarn run release
 env:
   global:
     secure: Ie5DkRIDW6dKljzw8jny3karIB2cKwJRQ+pU+O7bpFfuTv7ztCRzq2sXLAPjo2fWTkFLsWhz0KAmALaCXBIwnqeCkDs3JxVk7ZhhEO+GwE1PUwUY+x+6XI8G4G2wSHFkpBfRVg9ixDTLAFP43Fy2fSulpY18XIfq2OQ0BjGjSzxicqhs2Wz0cEN/uP/2M6UwcRydMmLY25bcVbQGahyNdfLpCGcJG2TS257Ca34r7QcSyY2rJ4MxFwPKOkyOswb2+15oA0PuwCDcv1NbVfbKsrDfLZUqlhvrSPEjPcA6itbedFkVH8rlyqO1noXLsiBGEeTLASD7U6/Pz1RvmG0vpLTnJ6PMWm9zFhM1dlQrVktBaCIqyvugTkR/7+KvX+YvSGPxswOiI2/sDXia8TUJsCWtxYV+HX5cvJaiwTpVoU5pJ5EQh5vjGPI0BN5hknI1VEQze2QwlEcWQE6hmmyULTGUv/goJYLsjsh37NcuXmlvDWR1brmL0MRFVSsEknewadLCJ/xERzsvrTbaW2tdyDGl/Bv72D8O8PAR4A/cb8Gkf5mQ8EpTw2RVfG38cX6BEvE3YJhVt/jaKoBX+0W4qytCBhADdQagbj5u/XoUG2IhqrqxeIYrMaEjKtd27kPH92f+PIMg8jVyqxE/DzF21A7qsTtKuy/AKyHDtEbVHQ0=
