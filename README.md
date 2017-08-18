@@ -5,7 +5,7 @@
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/tonyc726/node-project-kit)
 
-A boilerplate helps you create node project easier.
+A generator to scaffold out your node project easier.
 
 ## Usage
 
