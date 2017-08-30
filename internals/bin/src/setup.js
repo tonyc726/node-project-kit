@@ -183,7 +183,7 @@ inquirer
       //   ), {});
 
       makePackage.text = 'write package.json file.';
-      fs.writeFileSync(path.join(PROJECT_ROOT, 'package2.json'), JSON.stringify(packageTplPlainObject, null, 2), { encoding: 'utf8' });
+      fs.writeFileSync(path.join(PROJECT_ROOT, 'package.json'), JSON.stringify(packageTplPlainObject, null, 2), { encoding: 'utf8' });
 
       makePackage.stop();
       makePackage.stream.write(`${logSymbols.success} package.json, make success`);

@@ -192,7 +192,7 @@ _inquirer2.default.prompt(prompts).then(function (answers) {
 
 
     makePackage.text = 'write package.json file.';
-    _fs2.default.writeFileSync(_path2.default.join(PROJECT_ROOT, 'package2.json'), (0, _stringify2.default)(packageTplPlainObject, null, 2), { encoding: 'utf8' });
+    _fs2.default.writeFileSync(_path2.default.join(PROJECT_ROOT, 'package.json'), (0, _stringify2.default)(packageTplPlainObject, null, 2), { encoding: 'utf8' });
 
     makePackage.stop();
     makePackage.stream.write(_logSymbols2.default.success + ' package.json, make success');
