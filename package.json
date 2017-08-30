@@ -1,8 +1,7 @@
 {
   "name": "node-project-kit",
-  "version": "0.0.0-semantic-release",
-  "description": "A boilerplate helps you create node project easier.",
-  "private": true,
+  "version": "0.0.0-development",
+  "description": "A kit helps you to create Node.js project effortlessly.",
   "repository": {
     "type": "git",
     "url": "https://github.com/tonyc726/node-project-kit"
