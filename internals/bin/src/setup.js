@@ -114,7 +114,7 @@ if (hasNPM && hasYarn) {
 inquirer
   .prompt(prompts)
   .then((answers) => {
-    process.stdout.write(`\n-------- ${logSymbols.info} Project start building --------\n`);
+    process.stdout.write(`\n-------- ${logSymbols.info} Project start revitalizing --------\n`);
     // make LICESEN
     const makeLicense = ora('start make license file').start();
     if (answers.license && answers.license.length !== 0) {
@@ -197,18 +197,18 @@ inquirer
       execSync(`rm -f ${path.join(PROJECT_ROOT, 'package-lock.json')}`);
       execSync(`rm -f ${path.join(PROJECT_ROOT, 'yarn.lock')}`);
       execSync(`rm -rf ${path.join(PROJECT_ROOT, 'node_modules')}`);
-      cleanCache.stop();
-      cleanCache.stream.write(`${logSymbols.success} npm cache, clean success`);
+      execSync(`rm -rf ${path.join(PROJECT_ROOT, 'internals')}`);
+      cleanCache.succeed('npm cache, clean success!');
     } catch (error) {
       cleanCache.fail(error || 'npm cache, clean fail');
     }
 
     // install dependencies
-    const installDependencies = ora('install dependencies').start();
+    const installDependencies = ora(`${hasYarn ? 'yarn' : 'npm'} install dependencies`).start();
     try {
-      execSync(`${hasYarn ? 'yarn' : 'npm'} install`);
-      installDependencies.stop();
-      installDependencies.stream.write(`${logSymbols.success} npm dependencies, install success`);
+      const installResult = execSync(`${hasYarn ? 'yarn' : 'npm'} install`);
+      process.stdout.write(installResult);
+      installDependencies.succeed('npm dependencies, install success!');
     } catch (error) {
       installDependencies.fail(error || 'npm dependencies, install fail');
     }
@@ -226,6 +226,8 @@ inquirer
     } catch (error) {
       reinitGit.fail(error || 'git repository, reinitialize fail');
     }
+
+    process.stdout.write(`\n======== ${logSymbols.info} Project revitalizing done ========\n`);
   })
   .catch((err) => {
     process.stdout.write(`${logSymbols.error} ${err}`);

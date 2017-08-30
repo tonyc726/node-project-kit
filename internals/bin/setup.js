@@ -136,7 +136,7 @@ var prompts = [{
 if (hasNPM && hasYarn) {}
 
 _inquirer2.default.prompt(prompts).then(function (answers) {
-  process.stdout.write('\n-------- ' + _logSymbols2.default.info + ' Project start building --------\n');
+  process.stdout.write('\n-------- ' + _logSymbols2.default.info + ' Project start revitalizing --------\n');
 
   var makeLicense = (0, _ora2.default)('start make license file').start();
   if (answers.license && answers.license.length !== 0) {
@@ -205,17 +205,17 @@ _inquirer2.default.prompt(prompts).then(function (answers) {
     (0, _child_process.execSync)('rm -f ' + _path2.default.join(PROJECT_ROOT, 'package-lock.json'));
     (0, _child_process.execSync)('rm -f ' + _path2.default.join(PROJECT_ROOT, 'yarn.lock'));
     (0, _child_process.execSync)('rm -rf ' + _path2.default.join(PROJECT_ROOT, 'node_modules'));
-    cleanCache.stop();
-    cleanCache.stream.write(_logSymbols2.default.success + ' npm cache, clean success');
+    (0, _child_process.execSync)('rm -rf ' + _path2.default.join(PROJECT_ROOT, 'internals'));
+    cleanCache.succeed('npm cache, clean success!');
   } catch (error) {
     cleanCache.fail(error || 'npm cache, clean fail');
   }
 
-  var installDependencies = (0, _ora2.default)('install dependencies').start();
+  var installDependencies = (0, _ora2.default)((hasYarn ? 'yarn' : 'npm') + ' install dependencies').start();
   try {
-    (0, _child_process.execSync)((hasYarn ? 'yarn' : 'npm') + ' install');
-    installDependencies.stop();
-    installDependencies.stream.write(_logSymbols2.default.success + ' npm dependencies, install success');
+    var installResult = (0, _child_process.execSync)((hasYarn ? 'yarn' : 'npm') + ' install');
+    process.stdout.write(installResult);
+    installDependencies.succeed('npm dependencies, install success!');
   } catch (error) {
     installDependencies.fail(error || 'npm dependencies, install fail');
   }
@@ -232,6 +232,8 @@ _inquirer2.default.prompt(prompts).then(function (answers) {
   } catch (error) {
     reinitGit.fail(error || 'git repository, reinitialize fail');
   }
+
+  process.stdout.write('\n======== ' + _logSymbols2.default.info + ' Project revitalizing done ========\n');
 }).catch(function (err) {
   process.stdout.write(_logSymbols2.default.error + ' ' + err);
   process.exit(1);
