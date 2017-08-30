@@ -1,4 +1,4 @@
 node_modules/
 dist/
-internals/
-!internals/scripts/src
+internals/**/*.js
+!internals/bin/src/
