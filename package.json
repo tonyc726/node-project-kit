@@ -31,7 +31,7 @@
     "bin:build": "babel ./internals/bin/src/setup.js --out-file ./internals/bin/setup.js",
     "premake": "npm run bin:lint && npm run bin:test",
     "make": "npm run bin:build",
-    "setup": "node ./bin/setup.js"
+    "setup": "node ./internals/bin/setup.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
