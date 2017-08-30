@@ -31,6 +31,7 @@
     "bin:build": "babel ./internals/bin/src/setup.js --out-file ./internals/bin/setup.js",
     "premake": "npm run bin:lint && npm run bin:test",
     "make": "npm run bin:build",
+    "presetup": "npm install inquirer log-symbols mustache ora --no-save --no-shrinkwrap --no-package-lock",
     "setup": "node ./internals/bin/setup.js"
   },
   "devDependencies": {
