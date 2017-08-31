@@ -14,7 +14,7 @@
 - [x] 清理`git`记录，从新初始化log;
 
 待开发的需求清单：
-- [] 增加交互环节的模板选择环节，对应生成`fis3`、`webpack`等等选择；
+- [-] 增加交互环节的模板选择环节，对应生成`fis3`、`webpack`等等选择；
 
 ## 如何使用
 > 使用前确保已经安装`v6.*`或者更新版本的Node.js，最好已经安装yarn以便于加快安装速度(`v5.*`版本的npm也是不错的选择)
@@ -22,6 +22,8 @@
 1. `git clone https://github.com/tonyc726/node-project-kit`到本地；
 2. `npm run setup`或者`yarn run setup`进入交互式安装过程，填写对应信息，即可完成初始化工作；
 3. 微调配置，熟悉一下`package.json`中的各项内容，进入开发；
+
+[![asciicast](https://asciinema.org/a/TThXDaifGa8TANRYRR7s46cBL.png)](https://asciinema.org/a/TThXDaifGa8TANRYRR7s46cBL)
 
 ## 工程说明
 
