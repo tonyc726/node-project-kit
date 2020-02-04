@@ -64,7 +64,9 @@ const prompts = [
     message: 'project name: ',
     default() {
       const projectPathParse = path.parse(process.cwd());
-      return projectPathParse && projectPathParse.name ? projectPathParse.name : '';
+      return projectPathParse && projectPathParse.name
+        ? projectPathParse.name
+        : '';
     },
   },
   {
@@ -100,10 +102,33 @@ const prompts = [
     message: 'author: ',
   },
   {
-    type: 'input',
+    type: 'list',
     name: 'license',
-    message: 'license: ',
-    default: 'MIT',
+    message: 'choose license: ',
+    choices: [
+      'none',
+      'APACHE',
+      'BSD',
+      'GPL',
+      'MIT',
+      'MPL',
+    ],
+  },
+  {
+    type: 'list',
+    name: 'template',
+    message: 'choose template: ',
+    choices: [
+      'none',
+      {
+        name: 'F.I.S',
+        value: 'fis',
+      },
+      {
+        name: 'Webpack',
+        value: 'webpack',
+      },
+    ],
   },
 ];
 
@@ -117,38 +142,77 @@ inquirer
     process.stdout.write(`\n-------- ${logSymbols.info} Project start revitalizing --------\n`);
     // make LICESEN
     const makeLicense = ora('start make license file').start();
-    if (answers.license && answers.license.length !== 0) {
-      if ((/(APACHE|BSD|GPL|MIT|MPL)/i).test(answers.license.toUpperCase())) {
-        const year = (new Date()).getUTCFullYear();
+    switch (answers.license.toUpperCase()) {
+      case 'APACHE':
+      case 'BSD':
+      case 'GPL':
+      case 'MIT':
+      case 'MPL': {
+        const year = new Date().getUTCFullYear();
         try {
-          const licenseTpl = fs.readFileSync(path.join(PROJECT_ROOT, 'internals/templates/licenses', answers.license.toUpperCase()), { encoding: 'utf8' });
+          const licenseTpl = fs.readFileSync(
+            path.join(
+              PROJECT_ROOT,
+              'internals/templates/licenses',
+              answers.license.toUpperCase(),
+            ),
+            { encoding: 'utf8' },
+          );
           const licenseContent = mustache.render(licenseTpl, {
             year,
             author: answers.author,
           });
-          fs.writeFileSync(path.join(PROJECT_ROOT, 'LICENSE'), licenseContent, { encoding: 'utf8' });
+          fs.writeFileSync(path.join(PROJECT_ROOT, 'LICENSE'), licenseContent, {
+            encoding: 'utf8',
+          });
           makeLicense.stop();
           makeLicense.stream.write(`${logSymbols.success} LICENSE, create success by ${answers.license} template.`);
         } catch (error) {
           makeLicense.fail(error || 'LICENSE, make fail');
         }
-      } else {
-        fs.writeFileSync(path.join(PROJECT_ROOT, 'LICENSE'), '', { encoding: 'utf8' });
-        makeLicense.stop();
-        makeLicense.stream.write(`${logSymbols.success} LICENSE, clean success`);
+        break;
       }
-    } else {
-      makeLicense.stream.write('license config unfound, delete the license file');
-      execSync(`rm -f ${path.join(PROJECT_ROOT, 'LICENSE')}`);
-      makeLicense.stop();
-      makeLicense.stream.write(`${logSymbols.success} LICENSE, delete success`);
+      case 'NONE':
+      default: {
+        makeLicense.stream.write('license unneeded');
+        execSync(`rm -f ${path.join(PROJECT_ROOT, 'LICENSE')}`);
+        makeLicense.stop();
+        makeLicense.stream.write(`${logSymbols.success} LICENSE, delete success`);
+      }
     }
+
+    // choose template
+    if (answers.template === 'fis') {
+      const useTemplate = ora('start sync template file').start();
+      const templatePath = path.join(PROJECT_ROOT, 'internals/templates/fis');
+      try {
+        makeLicense.stream.write('clean old project file');
+        execSync(`rm -Rf ${path.join(PROJECT_ROOT, 'src')}`);
+        execSync(`rm -Rf ${path.join(PROJECT_ROOT, 'dist')}`);
+
+        makeLicense.stream.write('sync template file');
+        execSync(`cp -f ${path.join(templatePath, '.babelrc')} ${path.join(PROJECT_ROOT, '.babelrc')}`);
+        execSync(`cp -f ${path.join(templatePath, 'fis-conf.js')} ${path.join(PROJECT_ROOT, 'fis-conf.js')}`);
+        execSync(`rm -Rf ${path.join(PROJECT_ROOT, 'dist')}`);
+
+        useTemplate.stop();
+        useTemplate.stream.write(`${logSymbols.success} LICENSE, delete success`);
+      } catch (error) {
+        useTemplate.fail(error || 'sync template fail');
+      }
+    } else if (answers.template === 'webpack') {
+      const useTemplate = ora('start sync template file').start();
+    }
+
 
     // make package.json
     const makePackage = ora('start make package.json').start();
     try {
       makePackage.text = 'read package template file.';
-      const packageTpl = fs.readFileSync(path.join(PROJECT_ROOT, 'package.json'), { encoding: 'utf8' });
+      const packageTpl = fs.readFileSync(
+        path.join(PROJECT_ROOT, 'package.json'),
+        { encoding: 'utf8' },
+      );
 
       makePackage.text = 'parse package template to plain object.';
       const packageTplPlainObject = JSON.parse(packageTpl);
@@ -161,14 +225,15 @@ inquirer
 
       makePackage.text = 'clean scripts.';
       packageTplPlainObject.scripts = Object.keys(packageTplPlainObject.scripts)
-        .filter((scriptName) => ([
-          'prebuild', 'build', 'lint', 'test', 'semantic-release',
-        ].includes(scriptName)))
-        .reduce((scripts, scriptName) => (
-          Object.assign({}, scripts, {
-            [scriptName]: packageTplPlainObject.scripts[scriptName],
-          })
-        ), {});
+        .filter((scriptName) =>
+          ['prebuild', 'build', 'lint', 'test', 'semantic-release'].includes(scriptName))
+        .reduce(
+          (scripts, scriptName) =>
+            Object.assign({}, scripts, {
+              [scriptName]: packageTplPlainObject.scripts[scriptName],
+            }),
+          {},
+        );
 
       makePackage.text = 'clean dependencies.';
       packageTplPlainObject.dependencies = {};
@@ -183,7 +248,11 @@ inquirer
       //   ), {});
 
       makePackage.text = 'write package.json file.';
-      fs.writeFileSync(path.join(PROJECT_ROOT, 'package.json'), JSON.stringify(packageTplPlainObject, null, 2), { encoding: 'utf8' });
+      fs.writeFileSync(
+        path.join(PROJECT_ROOT, 'package.json'),
+        JSON.stringify(packageTplPlainObject, null, 2),
+        { encoding: 'utf8' },
+      );
 
       makePackage.stop();
       makePackage.stream.write(`${logSymbols.success} package.json, make success`);

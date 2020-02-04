@@ -127,10 +127,21 @@ var prompts = [{
   name: 'author',
   message: 'author: '
 }, {
-  type: 'input',
+  type: 'list',
   name: 'license',
-  message: 'license: ',
-  default: 'MIT'
+  message: 'choose license: ',
+  choices: ['none', 'APACHE', 'BSD', 'GPL', 'MIT', 'MPL']
+}, {
+  type: 'list',
+  name: 'template',
+  message: 'choose template: ',
+  choices: ['none', {
+    name: 'F.I.S',
+    value: 'fis'
+  }, {
+    name: 'Webpack',
+    value: 'webpack'
+  }]
 }];
 
 if (hasNPM && hasYarn) {}
@@ -139,31 +150,60 @@ _inquirer2.default.prompt(prompts).then(function (answers) {
   process.stdout.write('\n-------- ' + _logSymbols2.default.info + ' Project start revitalizing --------\n');
 
   var makeLicense = (0, _ora2.default)('start make license file').start();
-  if (answers.license && answers.license.length !== 0) {
-    if (/(APACHE|BSD|GPL|MIT|MPL)/i.test(answers.license.toUpperCase())) {
-      var year = new Date().getUTCFullYear();
-      try {
-        var licenseTpl = _fs2.default.readFileSync(_path2.default.join(PROJECT_ROOT, 'internals/templates/licenses', answers.license.toUpperCase()), { encoding: 'utf8' });
-        var licenseContent = _mustache2.default.render(licenseTpl, {
-          year: year,
-          author: answers.author
-        });
-        _fs2.default.writeFileSync(_path2.default.join(PROJECT_ROOT, 'LICENSE'), licenseContent, { encoding: 'utf8' });
-        makeLicense.stop();
-        makeLicense.stream.write(_logSymbols2.default.success + ' LICENSE, create success by ' + answers.license + ' template.');
-      } catch (error) {
-        makeLicense.fail(error || 'LICENSE, make fail');
+  switch (answers.license.toUpperCase()) {
+    case 'APACHE':
+    case 'BSD':
+    case 'GPL':
+    case 'MIT':
+    case 'MPL':
+      {
+        var year = new Date().getUTCFullYear();
+        try {
+          var licenseTpl = _fs2.default.readFileSync(_path2.default.join(PROJECT_ROOT, 'internals/templates/licenses', answers.license.toUpperCase()), { encoding: 'utf8' });
+          var licenseContent = _mustache2.default.render(licenseTpl, {
+            year: year,
+            author: answers.author
+          });
+          _fs2.default.writeFileSync(_path2.default.join(PROJECT_ROOT, 'LICENSE'), licenseContent, {
+            encoding: 'utf8'
+          });
+          makeLicense.stop();
+          makeLicense.stream.write(_logSymbols2.default.success + ' LICENSE, create success by ' + answers.license + ' template.');
+        } catch (error) {
+          makeLicense.fail(error || 'LICENSE, make fail');
+        }
+        break;
       }
-    } else {
-      _fs2.default.writeFileSync(_path2.default.join(PROJECT_ROOT, 'LICENSE'), '', { encoding: 'utf8' });
-      makeLicense.stop();
-      makeLicense.stream.write(_logSymbols2.default.success + ' LICENSE, clean success');
+    case 'NONE':
+    default:
+      {
+        makeLicense.stream.write('license unneeded');
+        (0, _child_process.execSync)('rm -f ' + _path2.default.join(PROJECT_ROOT, 'LICENSE'));
+        makeLicense.stop();
+        makeLicense.stream.write(_logSymbols2.default.success + ' LICENSE, delete success');
+      }
+  }
+
+  if (answers.template === 'fis') {
+    var useTemplate = (0, _ora2.default)('start sync template file').start();
+    var templatePath = _path2.default.join(PROJECT_ROOT, 'internals/templates/fis');
+    try {
+      makeLicense.stream.write('clean old project file');
+      (0, _child_process.execSync)('rm -Rf ' + _path2.default.join(PROJECT_ROOT, 'src'));
+      (0, _child_process.execSync)('rm -Rf ' + _path2.default.join(PROJECT_ROOT, 'dist'));
+
+      makeLicense.stream.write('sync template file');
+      (0, _child_process.execSync)('cp -f ' + _path2.default.join(templatePath, '.babelrc') + ' ' + _path2.default.join(PROJECT_ROOT, '.babelrc'));
+      (0, _child_process.execSync)('cp -f ' + _path2.default.join(templatePath, 'fis-conf.js') + ' ' + _path2.default.join(PROJECT_ROOT, 'fis-conf.js'));
+      (0, _child_process.execSync)('rm -Rf ' + _path2.default.join(PROJECT_ROOT, 'dist'));
+
+      useTemplate.stop();
+      useTemplate.stream.write(_logSymbols2.default.success + ' LICENSE, delete success');
+    } catch (error) {
+      useTemplate.fail(error || 'sync template fail');
     }
-  } else {
-    makeLicense.stream.write('license config unfound, delete the license file');
-    (0, _child_process.execSync)('rm -f ' + _path2.default.join(PROJECT_ROOT, 'LICENSE'));
-    makeLicense.stop();
-    makeLicense.stream.write(_logSymbols2.default.success + ' LICENSE, delete success');
+  } else if (answers.template === 'webpack') {
+    var _useTemplate = (0, _ora2.default)('start sync template file').start();
   }
 
   var makePackage = (0, _ora2.default)('start make package.json').start();
