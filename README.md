@@ -1,3 +1,7 @@
+# WARNING: This repository is no longer maintained :warning:
+
+> 本项目不再维护，如有需要，请邮件联系
+
 # Node.js Project Kit - 便捷的Node.js项目初始化工具
 
 [![Build Status](https://travis-ci.org/tonyc726/node-project-kit.svg?style=flat-square&branch=master)](https://travis-ci.org/tonyc726/node-project-kit)
